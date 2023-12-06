@@ -1,0 +1,10 @@
+spring:
+  r2dbc:
+    username: root
+    password: rahasia
+    url: r2dbc:mysql://localhost:3306/sampledb
+  flyway:
+    url: jdbc:mysql://localhost:3306/sampledb
+  graphql:
+    graphiql:
+      enabled=true:

@@ -1,0 +1,18 @@
+type User{
+    id: Int,
+    name: String,
+    noTelephoneOrEmail: String,
+    profilePicture: String,
+    description: String,
+    createdAt: String,
+    createdBy: Int,
+    updatedAt: String,
+    updatedBy: Int,
+    deletedAt: String,
+    deletedBy: Int
+}
+
+input CreateUser{
+    noTelephoneOrEmail: String,
+    password: String
+}
