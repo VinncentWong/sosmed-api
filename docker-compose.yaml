@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  redis_db:
+    container_name: "redis_db"
+    image: "redis:7.2.3"
+    ports:
+      - "6379:6379"
+  elastic_search_db:
+    container_name: "elastic_db"
+    image: "elasticsearch:8.11.1"
+    ports:
+      - "9200:9200"
+    environment:
+      - "discovery.type=single-node"
+  kibana:
+    container_name: "kibana"
+    image: "kibana:8.11.1"
+    ports:
+      - "5601:5601"
