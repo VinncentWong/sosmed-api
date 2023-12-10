@@ -1,0 +1,45 @@
+spring:
+  r2dbc:
+    username:
+    password:
+    url:
+  flyway:
+    url:
+  graphql:
+    graphiql:
+      enabled:
+  data:
+    elasticsearch:
+      cluster-name:
+      cluster-nodes:
+      repositories:
+        enabled: true
+
+redis:
+  host:
+  port:
+  password:
+
+elastic:
+  host:
+  port:
+  username:
+  password: 
+
+logging:
+  level:
+    io.r2dbc.postgresql.QUERY: DEBUG # for queries
+    io.r2dbc.postgresql.PARAM: DEBUG # for parameters
+    org:
+      springframework:
+        r2dbc: DEBUG
+
+springdoc:
+  use-fqn:
+  swagger-ui:
+    path:
+
+kafka:
+  bootstrap_server:
+  username:
+  password:

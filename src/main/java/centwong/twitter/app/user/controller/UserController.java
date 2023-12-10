@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/user")
 public class UserController {
 
     private final IUserService service;
@@ -25,16 +24,15 @@ public class UserController {
         this.service = service;
     }
 
+    /***
+     * <a href="https://github.com/graphql-java-kickstart/graphql-java-tools/discussions/589">...</a>
+     * Don't use ResponseEntity becuase GraphQL Java Engine automatically send response with 3 props
+     * If you want to customize, refer to link above
+     */
     @MutationMapping
-    public Mono<ResponseEntity<Response<User>>> create(@Argument(name = "input") UserDto.Create dto){
+    public Mono<User> create(@Argument(name = "input") UserDto.Create dto){
         return this
                 .service
-                .create(dto)
-                .map((res) -> ResponseUtil.sendResponse(
-                        true,
-                        "success create user",
-                        res,
-                        null
-                ));
+                .create(dto);
     }
 }

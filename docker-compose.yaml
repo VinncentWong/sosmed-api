@@ -5,6 +5,7 @@ services:
     image: "redis:7.2.3"
     ports:
       - "6379:6379"
+    restart: on-failure
   elastic_search_db:
     container_name: "elastic_db"
     image: "elasticsearch:8.11.1"
@@ -12,8 +13,17 @@ services:
       - "9200:9200"
     environment:
       - "discovery.type=single-node"
+    volumes:
+      - "elastic_search_volume:/usr/share/elasticsearch/data"
+    restart: on-failure
   kibana:
     container_name: "kibana"
     image: "kibana:8.11.1"
     ports:
       - "5601:5601"
+    depends_on:
+      - elastic_search_db
+    restart: on-failure
+
+volumes:
+  elastic_search_volume:
