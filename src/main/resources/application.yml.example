@@ -8,23 +8,35 @@ spring:
   graphql:
     graphiql:
       enabled:
-  data:
-    elasticsearch:
-      cluster-name:
-      cluster-nodes:
-      repositories:
-        enabled: true
-
-redis:
-  host:
-  port:
-  password:
+  main:
+    allow-bean-definition-overriding:
+  kafka:
+    properties:
+      sasl:
+        mechanism:
+        jaas:
+          config:
+      security:
+        protocol:
+    bootstrap-servers:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group_id:
 
 elastic:
   host:
   port:
   username:
-  password: 
+  password:
+
+redis:
+  host:
+  port:
+  password:
 
 logging:
   level:
@@ -33,6 +45,10 @@ logging:
     org:
       springframework:
         r2dbc: DEBUG
+        data:
+          elasticsearch:
+            client:
+              WIRE: trace
 
 springdoc:
   use-fqn:
@@ -40,6 +56,5 @@ springdoc:
     path:
 
 kafka:
-  bootstrap_server:
   username:
   password:

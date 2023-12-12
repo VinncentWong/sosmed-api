@@ -1,7 +1,11 @@
 package centwong.twitter.app.user.service;
 
+import centwong.twitter.app.broker.Producer;
 import centwong.twitter.app.redis.IRedisRepository;
 import centwong.twitter.app.redis.RedisRepository;
+import centwong.twitter.entity.DbLog;
+import centwong.twitter.entity.Operation;
+import centwong.twitter.entity.constant.KafkaTopicContant;
 import centwong.twitter.entity.constant.UserConstant;
 import centwong.twitter.app.user.repository.UserRepository;
 import centwong.twitter.dto.UserDto;
@@ -24,11 +28,14 @@ public class UserService implements IUserService{
 
     private final ReactiveElasticsearchOperations elasticRepository;
 
+    private final Producer producer;
+
     @Autowired
-    public UserService(UserRepository repository, RedisRepository redisRepository, ReactiveElasticsearchOperations elasticRepository){
+    public UserService(UserRepository repository, RedisRepository redisRepository, ReactiveElasticsearchOperations elasticRepository, Producer producer){
         this.repository = repository;
         this.redisRepository = redisRepository;
         this.elasticRepository = elasticRepository;
+        this.producer = producer;
     }
 
     @Override
@@ -44,6 +51,17 @@ public class UserService implements IUserService{
         return insertUser
                 .zipWith(deleteCache)
                 .map(Tuple2::getT1)
+                .doOnSuccess((s) -> {
+                    producer.sendMessage(
+                            KafkaTopicContant.DB_LOG,
+                            DbLog
+                                    .builder()
+                                    .operation(Operation.CREATE.name())
+                                    .tableName(User.class.getName())
+                                    .message(String.format("save %s with data %s", User.class.getSimpleName(), s))
+                                    .build()
+                    );
+                })
                 .subscribeOn(Schedulers.boundedElastic());
     }
 }

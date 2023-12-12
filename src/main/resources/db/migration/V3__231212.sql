@@ -1,0 +1,17 @@
+ALTER TABLE `user`
+MODIFY COLUMN `deleted_at` TIMESTAMP;
+
+ALTER TABLE `thread`
+MODIFY COLUMN `deleted_at` TIMESTAMP;
+
+ALTER TABLE `like`
+MODIFY COLUMN `deleted_at` TIMESTAMP;
+
+ALTER TABLE `following`
+MODIFY COLUMN `deleted_at` TIMESTAMP;
+
+ALTER TABLE `retweet`
+MODIFY COLUMN `deleted_at` TIMESTAMP;
+
+ALTER TABLE `comment`
+MODIFY COLUMN `deleted_at` TIMESTAMP;
