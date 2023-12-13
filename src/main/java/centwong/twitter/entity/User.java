@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Document(indexName = "user")
 @Data
 @Builder
-public class User {
+public class User{
 
     @Id
     private Long id;

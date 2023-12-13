@@ -3,10 +3,19 @@ package centwong.twitter.dto;
 import centwong.twitter.entity.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
+
+    @Autowired
+    private static BCryptPasswordEncoder encoder;
 
     public record Create(
         @NotNull(message = "email or telephone number should not be null")
@@ -23,8 +32,7 @@ public class UserDto {
                     .createdAt(LocalDate.now())
                     .updatedAt(LocalDate.now())
                     .noTelephoneOrEmail(this.noTelephoneOrEmail)
-                    // TODO: Apply Encryption on .password(this.password)
-                    .password(this.password)
+                    .password(encoder.encode(this.password))
                     .build();
         }
     }
