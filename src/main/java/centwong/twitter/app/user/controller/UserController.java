@@ -35,4 +35,11 @@ public class UserController {
                 .service
                 .create(dto);
     }
+
+    @MutationMapping
+    public Mono<User> login(@Argument(name = "input") UserDto.Login dto){
+        return this
+                .service
+                .login(dto);
+    }
 }

@@ -1,11 +1,19 @@
 package centwong.twitter.entity;
 
+import lombok.*;
+
 import java.time.LocalDate;
 import java.util.List;
 
-public record AuthDto(
-        Long id,
-        String principal,
-        LocalDate createdAt,
-        List<String> roles
-) {}
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
+@ToString
+@Builder
+public class AuthDto{
+    private Long id;
+    private String principal;
+    private LocalDate createdAt;
+    private List<String> roles;
+}

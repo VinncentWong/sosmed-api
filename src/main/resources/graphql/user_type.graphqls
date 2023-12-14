@@ -4,6 +4,7 @@ type User{
     noTelephoneOrEmail: String,
     profilePicture: String,
     description: String,
+    jwtToken: String,
     createdAt: String,
     createdBy: Int,
     updatedAt: String,
@@ -12,7 +13,7 @@ type User{
     deletedBy: Int
 }
 
-input CreateUser{
+input CreateLoginUser{
     noTelephoneOrEmail: String,
     password: String
 }

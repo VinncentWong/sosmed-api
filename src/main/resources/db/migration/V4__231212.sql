@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS `db_log`(
 	id VARCHAR(255) NOT NULL UNIQUE,
 	operation VARCHAR(255),
 	table_name VARCHAR(255),
-	message VARCHAR(255),
+	message TEXT,
 
 	PRIMARY KEY(id)
 );

@@ -31,12 +31,14 @@ public class SecurityConfiguration {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Bean
     @SneakyThrows
     public SecurityWebFilterChain filterChain(ServerHttpSecurity req){
         return req
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .addFilterAfter(this.jwtFilter(), SecurityWebFiltersOrder.EXCEPTION_TRANSLATION)
+                .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .exceptionHandling((c) -> {
                     c.accessDeniedHandler((server, exception) -> {
                         var response = server.getResponse();

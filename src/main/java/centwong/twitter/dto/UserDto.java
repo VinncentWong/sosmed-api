@@ -10,12 +10,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
 
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserDto {
 
-    @Autowired
-    private static BCryptPasswordEncoder encoder;
+    private static BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public record Create(
         @NotNull(message = "email or telephone number should not be null")
@@ -33,6 +30,21 @@ public class UserDto {
                     .updatedAt(LocalDate.now())
                     .noTelephoneOrEmail(this.noTelephoneOrEmail)
                     .password(encoder.encode(this.password))
+                    .build();
+        }
+    }
+
+    public record Login(
+            String noTelephoneOrEmail,
+            String password
+    ){
+        public User toUser(){
+            return User
+                    .builder()
+                    .createdAt(LocalDate.now())
+                    .updatedAt(LocalDate.now())
+                    .noTelephoneOrEmail(this.noTelephoneOrEmail)
+                    .password(this.password)
                     .build();
         }
     }

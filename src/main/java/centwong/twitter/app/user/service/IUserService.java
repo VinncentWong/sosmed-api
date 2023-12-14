@@ -6,4 +6,5 @@ import reactor.core.publisher.Mono;
 
 public interface IUserService {
     Mono<User> create(UserDto.Create dto);
+    Mono<User> login(UserDto.Login dto);
 }

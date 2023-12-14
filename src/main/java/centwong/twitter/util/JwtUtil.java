@@ -7,16 +7,16 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.jackson.io.JacksonSerializer;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
 
@@ -34,12 +34,13 @@ public class JwtUtil {
     public String generateToken(AuthDto dto){
         var claims = Jwts
                 .claims()
-                .setId(String.valueOf(dto.id()))
-                .setSubject(dto.principal());
-        claims.put(SecurityConstant.CREATED_AT, dto.createdAt());
-        claims.put(SecurityConstant.ROLES, mapper.writeValueAsString(dto.roles()));
+                .setId(String.valueOf(dto.getId()))
+                .setSubject(dto.getPrincipal());
+        claims.put(SecurityConstant.CREATED_AT, dto.getCreatedAt());
+        claims.put(SecurityConstant.ROLES, mapper.writeValueAsString(dto.getRoles()));
         return Jwts
                 .builder()
+                .serializeToJsonWith(new JacksonSerializer<>(this.mapper))
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(this.secretKey.getBytes()))
                 .compact();
