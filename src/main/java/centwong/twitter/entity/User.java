@@ -1,10 +1,7 @@
 package centwong.twitter.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -17,9 +14,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Table("user")
 @Document(indexName = "user")
-@Data
+@ToString
+@Setter
+@Getter
 @Builder
-public class User{
+public class User extends Pageable{
 
     @Id
     private Long id;

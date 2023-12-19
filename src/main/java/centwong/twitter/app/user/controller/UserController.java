@@ -5,14 +5,18 @@ import centwong.twitter.app.user.service.UserService;
 import centwong.twitter.dto.UserDto;
 import centwong.twitter.entity.Response;
 import centwong.twitter.entity.User;
+import centwong.twitter.entity.UserParam;
 import centwong.twitter.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -41,5 +45,19 @@ public class UserController {
         return this
                 .service
                 .login(dto);
+    }
+
+    @QueryMapping
+    public Mono<List<User>> getList(@Argument(name = "param") UserParam param){
+        return this
+                .service
+                .getList(param);
+    }
+
+    @QueryMapping
+    public Mono<User> get(@Argument(name = "id") Long id){
+        return this
+                .service
+                .get(id);
     }
 }

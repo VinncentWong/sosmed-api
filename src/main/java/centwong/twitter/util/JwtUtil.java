@@ -1,6 +1,6 @@
 package centwong.twitter.util;
 
-import centwong.twitter.entity.AuthDto;
+import centwong.twitter.entity.AuthParam;
 import centwong.twitter.entity.constant.SecurityConstant;
 import centwong.twitter.security.authentication.JwtAuthentication;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -16,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class JwtUtil {
     private String secretKey;
 
     @SneakyThrows
-    public String generateToken(AuthDto dto){
+    public String generateToken(AuthParam dto){
         var claims = Jwts
                 .claims()
                 .setId(String.valueOf(dto.getId()))

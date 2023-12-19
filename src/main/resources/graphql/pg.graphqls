@@ -1,0 +1,4 @@
+input PgInput{
+    page: Int
+    limit: Int
+}

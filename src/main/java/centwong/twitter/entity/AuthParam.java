@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @ToString
 @Builder
-public class AuthDto{
+public class AuthParam {
     private Long id;
     private String principal;
     private LocalDate createdAt;

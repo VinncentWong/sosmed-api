@@ -4,5 +4,6 @@ type Mutation{
 }
 
 type Query{
-    user: User
+    getUser(id: Int): User
+    getListUser(pg: PgInput): [User]
 }
