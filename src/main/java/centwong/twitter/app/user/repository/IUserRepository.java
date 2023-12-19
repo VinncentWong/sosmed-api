@@ -16,4 +16,6 @@ public interface IUserRepository {
     Mono<User> get(UserParam param);
 
     Mono<List<User>> getList(UserParam param);
+
+    Mono<User> update(Long id, User user);
 }

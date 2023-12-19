@@ -48,16 +48,23 @@ public class UserController {
     }
 
     @QueryMapping
-    public Mono<List<User>> getList(@Argument(name = "param") UserParam param){
+    public Mono<List<User>> getListUser(@Argument(name = "param") UserParam param){
         return this
                 .service
                 .getList(param);
     }
 
     @QueryMapping
-    public Mono<User> get(@Argument(name = "id") Long id){
+    public Mono<User> getUser(@Argument(name = "id") Long id){
         return this
                 .service
                 .get(id);
+    }
+
+    @MutationMapping
+    public Mono<User> deleteUser(@Argument(name = "id") Long id){
+        return this
+                .service
+                .delete(id);
     }
 }

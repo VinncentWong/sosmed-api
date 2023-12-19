@@ -23,6 +23,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.util.function.Tuple2;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -82,7 +83,7 @@ public class UserService implements IUserService{
                             DbLog
                                     .builder()
                                     .operation(Operation.CREATE.name())
-                                    .tableName(User.class.getName())
+                                    .tableName(User.class.getSimpleName())
                                     .message(String.format("save %s with data %s", User.class.getSimpleName(), s))
                                     .build()
                     );
@@ -152,10 +153,11 @@ public class UserService implements IUserService{
                                             .operation(Operation.GET.name())
                                             .tableName(User.class.getSimpleName())
                                             .message(String.format("get user with id %d and result %s", id, d))
+                                            .build()
                             );
                 })
-                .doOnError((e) -> e.printStackTrace());
-
+                .doOnError((e) -> e.printStackTrace())
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     @Override
@@ -190,7 +192,28 @@ public class UserService implements IUserService{
                                     .build()
                     );
                 })
-                .doOnError((e) -> e.printStackTrace());
+                .doOnError((e) -> e.printStackTrace())
+                .subscribeOn(Schedulers.boundedElastic());
+    }
+
+    public Mono<User> delete(Long id){
+        return this
+                .repository
+                .update(id, User.builder().deletedAt(LocalDate.now()).build())
+                .doOnSuccess((d) -> {
+                    this.producer
+                            .sendMessage(
+                                    KafkaTopicContant.DB_LOG,
+                                    DbLog
+                                            .builder()
+                                            .message(String.format("successfully delete user with id: %d", d.getId()))
+                                            .operation(Operation.DELETE.name())
+                                            .tableName(User.class.getSimpleName())
+                                            .build()
+                            );
+                })
+                .doOnError((e) -> e.printStackTrace())
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
 

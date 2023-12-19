@@ -1,9 +1,10 @@
 type Mutation{
     create(input: CreateLoginUser): User
     login(input: CreateLoginUser): User
+    deleteUser(id: Int): User
 }
 
 type Query{
     getUser(id: Int): User
-    getListUser(pg: PgInput): [User]
+    getListUser(param: UserParam): [User]
 }

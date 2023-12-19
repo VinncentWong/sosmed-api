@@ -17,3 +17,11 @@ input CreateLoginUser{
     noTelephoneOrEmail: String,
     password: String
 }
+
+input UserParam{
+    id: Int,
+    ids: [Int],
+    username: String,
+    noTelephoneOrEmail: String,
+    pg: PgInput
+}

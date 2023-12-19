@@ -1,4 +1,5 @@
 input PgInput{
     page: Int
     limit: Int
+    isActive: Boolean = true
 }

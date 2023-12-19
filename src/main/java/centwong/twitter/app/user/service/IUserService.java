@@ -13,4 +13,6 @@ public interface IUserService {
     Mono<User> login(UserDto.Login dto);
     Mono<User> get(Long id);
     Mono<List<User>> getList(UserParam param);
+
+    Mono<User> delete(Long id);
 }
