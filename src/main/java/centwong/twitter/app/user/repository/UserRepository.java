@@ -1,5 +1,6 @@
 package centwong.twitter.app.user.repository;
 
+import centwong.twitter.entity.PgParam;
 import centwong.twitter.entity.User;
 import centwong.twitter.entity.UserParam;
 import centwong.twitter.mapper.UserMapper;
@@ -48,13 +49,20 @@ public class UserRepository implements IUserRepository{
     }
 
     @Override
-    public Mono<User> update(Long id, User user) {
+    public Mono<User> update(Long id, User user, boolean isActivate) {
         var userParam = UserParam
                 .builder()
-                .id(id)
-                .build();
+                .id(id);
+        if(isActivate){
+            userParam = userParam.pg(
+                    PgParam
+                            .builder()
+                            .isActive(false)
+                            .build()
+            );
+        }
         return this
-                .get(userParam)
+                .get(userParam.build())
                 .flatMap((u) -> {
                     var newUser = UserMapper.INSTANCE.updateUser(user, u);
                     return this.template.update(newUser);

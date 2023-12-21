@@ -7,6 +7,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.data.relational.core.query.Query;
 
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -94,7 +95,7 @@ public class QueryUtils {
             query = Query
                     .query(coreCriteria)
                     .offset(pg.getPage())
-                    .limit(pg.getLimit().intValue());
+                    .limit((int)pg.getLimit());
         } else {
             log.info("pg attribute not found on QueryUtils");
             query = Query

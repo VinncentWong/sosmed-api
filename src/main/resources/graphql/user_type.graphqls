@@ -25,3 +25,11 @@ input UserParam{
     noTelephoneOrEmail: String,
     pg: PgInput
 }
+
+input UpdateUser{
+    id: Int,
+    name: String,
+    noTelephoneOrEmail: String,
+    profilePicture: String,
+    description: String,
+}

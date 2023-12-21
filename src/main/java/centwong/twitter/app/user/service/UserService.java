@@ -199,7 +199,11 @@ public class UserService implements IUserService{
     public Mono<User> delete(Long id){
         return this
                 .repository
-                .update(id, User.builder().deletedAt(LocalDate.now()).build())
+                .update(id, User.builder().deletedAt(LocalDate.now()).build(), false)
+                .zipWith(
+                        this.redisRepository.deleteCache(UserRedisConstant.ALL)
+                )
+                .map(Tuple2::getT1)
                 .doOnSuccess((d) -> {
                     this.producer
                             .sendMessage(
@@ -216,5 +220,57 @@ public class UserService implements IUserService{
                 .subscribeOn(Schedulers.boundedElastic());
     }
 
+    public Mono<User> activate(Long id){
+        return this.repository
+                .update(
+                        id,
+                        User
+                        .builder()
+                        .deletedAt(null)
+                        .build(),
+                        true
+                )
+                .zipWith(
+                        this.redisRepository.deleteCache(UserRedisConstant.ALL)
+                )
+                .map(Tuple2::getT1)
+                .doOnSuccess((d) -> {
+                    this.producer
+                            .sendMessage(
+                                    KafkaTopicContant.DB_LOG,
+                                    DbLog
+                                            .builder()
+                                            .message(String.format("successfully activate user with id: %d", d.getId()))
+                                            .operation(Operation.ACTIVATE.name())
+                                            .tableName(User.class.getSimpleName())
+                                            .build()
+                            );
+                })
+                .doOnError((e) -> e.printStackTrace())
+                .subscribeOn(Schedulers.boundedElastic());
+    }
 
+    @Override
+    public Mono<User> update(Long id, User user) {
+        user.setUpdatedAt(LocalDate.now());
+        return this
+                .repository
+                .update(id, user, false)
+                .zipWith(this.redisRepository.deleteCache(UserRedisConstant.ALL))
+                .map(Tuple2::getT1)
+                .doOnSuccess((d) -> {
+                    this.producer
+                            .sendMessage(
+                                    KafkaTopicContant.DB_LOG,
+                                    DbLog
+                                            .builder()
+                                            .message(String.format("successfully update user with id: %d and updated value: %s", d.getId(), d))
+                                            .operation(Operation.UPDATE.name())
+                                            .tableName(User.class.getSimpleName())
+                                            .build()
+                            );
+                })
+                .doOnError((e) -> e.printStackTrace())
+                .subscribeOn(Schedulers.boundedElastic());
+    }
 }

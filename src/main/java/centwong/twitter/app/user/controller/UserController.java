@@ -67,4 +67,18 @@ public class UserController {
                 .service
                 .delete(id);
     }
+
+    @MutationMapping
+    public Mono<User> activateUser(@Argument(name = "id") Long id){
+        return this
+                .service
+                .activate(id);
+    }
+
+    @MutationMapping
+    public Mono<User> updateUser(@Argument(name = "id") Long id, @Argument(name = "input") User user){
+        return this
+                .service
+                .update(id, user);
+    }
 }

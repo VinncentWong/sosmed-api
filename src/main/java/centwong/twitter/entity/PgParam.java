@@ -11,9 +11,9 @@ import lombok.ToString;
 @ToString
 public class PgParam {
 
-    private Long limit;
+    private long limit;
 
-    private Long page;
+    private long page;
 
     private boolean isActive = true;
 }

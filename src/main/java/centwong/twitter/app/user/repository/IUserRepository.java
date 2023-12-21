@@ -17,5 +17,5 @@ public interface IUserRepository {
 
     Mono<List<User>> getList(UserParam param);
 
-    Mono<User> update(Long id, User user);
+    Mono<User> update(Long id, User user, boolean isActivate);
 }

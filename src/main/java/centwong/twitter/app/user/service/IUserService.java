@@ -15,4 +15,6 @@ public interface IUserService {
     Mono<List<User>> getList(UserParam param);
 
     Mono<User> delete(Long id);
+    Mono<User> activate(Long id);
+    Mono<User> update(Long id, User user);
 }
